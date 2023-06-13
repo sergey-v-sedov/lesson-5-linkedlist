@@ -1,40 +1,112 @@
-import java.util.LinkedList;
+import java.util.*;
 
 public class Main {
+
+    private static final int COLLECTION_SIZE = 10000;
+    private static final Random random = new Random();
+
     public static void main(String[] args) {
 
-        long startMills = System.currentTimeMillis();
+        List<String> linkedList = new LinkedList<>();
+        List<String> arrayList = new ArrayList<>();
 
-        LinkedList<Integer> list = new LinkedList<>();
-        list.add(1);
-        list.add(2);
-        list.add(1, 3);
+        long startTime = System.currentTimeMillis();
+        addRandomValuesToTail(linkedList);
+        long endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция добавления %s случайных значений в %s заняла %s мс", COLLECTION_SIZE,  "LinkedList", endTime - startTime));
 
-        list.addFirst(4);
-        list.addLast(5);
+        startTime = System.currentTimeMillis();
+        addRandomValuesToTail(arrayList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция добавления %s случайных значений в %s заняла %s мс", COLLECTION_SIZE, "ArrayList", endTime - startTime));
 
-        list.set(2, 6);
+        startTime = System.currentTimeMillis();
+        addRandomValuesToCenter(linkedList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция вставки %s случайных значений в середину списка в %s заняла %s мс", COLLECTION_SIZE, "LinkedList", endTime - startTime));
 
-        int value = list.get(2);
-        System.out.println(value);
+        startTime = System.currentTimeMillis();
+        addRandomValuesToCenter(arrayList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция вставки %s случайных значений в середину списка в %s заняла %s мс", COLLECTION_SIZE, "ArrayList", endTime - startTime));
 
-        int first = list.getFirst();
-        System.out.println(first);
+        startTime = System.currentTimeMillis();
+        getValuesWithRandomIndex(linkedList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция получения %s случайных значений из середины списка в %s заняла %s мс", COLLECTION_SIZE, "LinkedList", endTime - startTime));
 
-        int last = list.getLast();
-        System.out.println(last);
+        startTime = System.currentTimeMillis();
+        getValuesWithRandomIndex(arrayList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция получения %s случайных значений из середины списка в %s заняла %s мс", COLLECTION_SIZE, "ArrayList", endTime - startTime));
 
-        list.remove(3);
+        startTime = System.currentTimeMillis();
+        deleteValuesFromTail(linkedList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция удаления %s элементов из конца списка в %s заняла %s мс", COLLECTION_SIZE, "LinkedList", endTime - startTime));
 
-        Integer firstValueLink = list.removeFirst();
-        System.out.println(list);
+        startTime = System.currentTimeMillis();
+        deleteValuesFromTail(arrayList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция удаления %s элементов из конца списка в %s заняла %s мс", COLLECTION_SIZE, "ArrayList", endTime - startTime));
 
-        System.out.println(firstValueLink);
-        System.out.println(firstValueLink);
-        System.out.println(firstValueLink);
+        startTime = System.currentTimeMillis();
+        deleteValuesFromCenter(linkedList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция удаления %s элементов из середины списка в %s заняла %s мс", COLLECTION_SIZE, "LinkedList", endTime - startTime));
 
-        long endMills = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
+        deleteValuesFromCenter(arrayList);
+        endTime = System.currentTimeMillis();
+        System.out.println(String.format("Операция удаления %s элементов из середины списка в %s заняла %s мс", COLLECTION_SIZE, "ArrayList", endTime - startTime));
+    }
 
-        System.out.println("Программа работала: " + (endMills - startMills));
+    private static void deleteValuesFromCenter(List<String> list) {
+        ListIterator<String> iterator = list.listIterator();
+        for (int i = 0; i < COLLECTION_SIZE/2; i++) {
+            iterator.next();
+        }
+
+        while (iterator.hasNext()){
+            iterator.next();
+            iterator.remove();
+        }
+    }
+
+    private static void deleteValuesFromTail(List<String> list) {
+        for (int i = 0; i < COLLECTION_SIZE; i++) {
+            list.remove(list.size() - 1);
+        }
+    }
+
+    private static void getValuesWithRandomIndex(List<String> list) {
+        for (int i = 0; i < COLLECTION_SIZE; i++) {
+            String value = list.get(generateRandomIndex());
+        }
+    }
+
+    private static int generateRandomIndex() {
+        return random.nextInt(COLLECTION_SIZE);
+    }
+
+    private static void addRandomValuesToCenter(List<String> list) {
+        ListIterator<String> iterator = list.listIterator();
+        for (int i = 0; i < COLLECTION_SIZE/2; i++) {
+            iterator.next();
+        }
+
+        for (int i = 0; i < COLLECTION_SIZE; i++) {
+            iterator.add(generateRandomValue());
+        }
+    }
+
+    private static void addRandomValuesToTail(List<String> list) {
+        for (int i = 0; i < COLLECTION_SIZE; i++) {
+            list.add(generateRandomValue());
+        }
+    }
+
+    private static String generateRandomValue() {
+        return UUID.randomUUID().toString();
     }
 }
