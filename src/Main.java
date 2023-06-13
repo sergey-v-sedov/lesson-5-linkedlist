@@ -3,6 +3,8 @@ import java.util.LinkedList;
 public class Main {
     public static void main(String[] args) {
 
+        long startMills = System.currentTimeMillis();
+
         LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
@@ -30,5 +32,9 @@ public class Main {
         System.out.println(firstValueLink);
         System.out.println(firstValueLink);
         System.out.println(firstValueLink);
+
+        long endMills = System.currentTimeMillis();
+
+        System.out.println("Программа работала: " + (endMills - startMills));
     }
 }
